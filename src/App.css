@@ -1,0 +1,20 @@
+/* width */
+.forecast::-webkit-scrollbar {
+  height: 10px;
+}
+
+/* Track */
+.forecast::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+.forecast::-webkit-scrollbar-thumb {
+  background: rgb(241 245 249);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.forecast::-webkit-scrollbar-thumb:hover {
+  background: rgb(226 232 240);
+}
