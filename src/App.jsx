@@ -15,7 +15,7 @@ dayjs.extend(utc);
 
 function App() {
   const [userInput, setUserInput] = useState('');
-  const [query, setQuery] = useState(localStorage.getItem('weatherAppQuery'));
+  const [query, setQuery] = useState(() => localStorage.getItem('query'));
   const [weatherData, setWeatherData] = useState('');
   const [forecastData, setForecastData] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +35,7 @@ function App() {
   function handleSubmit(event) {
     event.preventDefault();
     setQuery(userInput);
-    localStorage.setItem('weatherAppQuery', userInput);
+    localStorage.setItem('query', userInput);
     setUserInput('');
   }
 
