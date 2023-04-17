@@ -16,9 +16,9 @@
 }
 
 body {
-  overflow-x: hidden;
   background-repeat: no-repeat;
   min-height: 100vh;
+  overflow-y: scroll;
 }
 
 img,
