@@ -1,28 +1,28 @@
-import ClearDay from '../components/icons/ClearDay';
-import ClearNight from '../components/icons/ClearNight';
-import Cloud from '../components/icons/Cloud';
-import Drizzle from '../components/icons/Drizzle';
-import Dust from '../components/icons/Dust';
-import ExtremeRain from '../components/icons/ExtremeRain';
-import FewCloudsDay from '../components/icons/FewCloudsDay';
-import FewCloudsNight from '../components/icons/FewCloudsNight';
-import Fog from '../components/icons/Fog';
-import Haze from '../components/icons/Haze';
-import Mist from '../components/icons/Mist';
-import OvercastClouds from '../components/icons/OvercastClouds';
-import PartlyCloudyDaySnow from '../components/icons/PartlyCloudyDaySnow';
-import PartlyCloudyNightSnow from '../components/icons/PartlyCloudyNightSnow';
-import Rain from '../components/icons/Rain';
-import RainDay from '../components/icons/RainDay';
-import RainNight from '../components/icons/RainNight';
-import Sleet from '../components/icons/Sleet';
-import Smoke from '../components/icons/Smoke';
-import Snow from '../components/icons/Snow';
-import Thunderstorm from '../components/icons/Thunderstorm';
-import ThunderstormRain from '../components/icons/ThunderstormRain';
-import Tornado from '../components/icons/Tornado';
+import ClearDay from './icons/ClearDay';
+import ClearNight from './icons/ClearNight';
+import Cloud from './icons/Cloud';
+import Drizzle from './icons/Drizzle';
+import Dust from './icons/Dust';
+import ExtremeRain from './icons/ExtremeRain';
+import FewCloudsDay from './icons/FewCloudsDay';
+import FewCloudsNight from './icons/FewCloudsNight';
+import Fog from './icons/Fog';
+import Haze from './icons/Haze';
+import Mist from './icons/Mist';
+import OvercastClouds from './icons/OvercastClouds';
+import PartlyCloudyDaySnow from './icons/PartlyCloudyDaySnow';
+import PartlyCloudyNightSnow from './icons/PartlyCloudyNightSnow';
+import Rain from './icons/Rain';
+import RainDay from './icons/RainDay';
+import RainNight from './icons/RainNight';
+import Sleet from './icons/Sleet';
+import Smoke from './icons/Smoke';
+import Snow from './icons/Snow';
+import Thunderstorm from './icons/Thunderstorm';
+import ThunderstormRain from './icons/ThunderstormRain';
+import Tornado from './icons/Tornado';
 
-export default function getIcon(id, width, daytime) {
+export default function WeatherIcon({ id, width, daytime }) {
   if (id >= 200 && id <= 202) {
     return <ThunderstormRain width={width} />;
   }

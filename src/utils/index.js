@@ -8,3 +8,11 @@ export function capitalizeEachWords(text) {
 export function isInRange(value, min, max) {
   return value >= min && value <= max;
 }
+
+export function getCountryNameByCode(code) {
+  try {
+    return new Intl.DisplayNames(['en'], { type: 'region' }).of(code);
+  } catch (error) {
+    return null;
+  }
+}

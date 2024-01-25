@@ -1,118 +1,82 @@
 import { useRef, useState } from 'react';
 import { Icon } from '@iconify/react';
-import SearchForm from './SearchForm';
-import { useOnClickOutside } from '../hooks/useOnClickOutside';
+import useWeather from '../hooks/useWeather';
+import useDelayUnmount from '../hooks/useDelayUnmount';
+import { clsx } from 'clsx';
 
-export default function Navbar(props) {
-  const settingsMenuRef = useRef();
-  const aboutMenuRef = useRef();
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const [aboutOpen, setAboutOpen] = useState(false);
+export default function Navbar() {
+  const { weatherLoading, setQuery, isMetric, swapUnits } = useWeather();
+  const [showTooltip, setShowTooltip] = useState(false);
+  const renderTooltip = useDelayUnmount(showTooltip, 250);
+  const inputRef = useRef(null);
 
-  useOnClickOutside(settingsMenuRef, () => {
-    if (settingsOpen) setSettingsOpen(false);
-  });
-
-  useOnClickOutside(aboutMenuRef, () => {
-    if (aboutOpen) setAboutOpen(false);
-  });
+  function handleSubmit(event) {
+    event.preventDefault();
+    const input = inputRef.current.value;
+    if (input === '') return;
+    setQuery(input);
+    localStorage.setItem('query', input);
+    inputRef.current.value = '';
+  }
 
   return (
-    <nav className="flex h-12 w-full items-center justify-end gap-2 px-4">
-      {!searchOpen && (
-        <>
-          <button className="search sm:hidden">
-            <Icon
-              icon="ic:baseline-search"
-              width="1.75rem"
-              height="1.75rem"
-              onClick={() => setSearchOpen(true)}
-            />
+    <nav className="relative flex w-full h-16 px-3 justify-center items-center gap-2">
+      <div className="relative overflow-hidden flex w-full bg-white border-2 border-slate-200 rounded-md duration-200 focus-within:border-slate-300">
+        <form
+          className="flex items-center gap-2 flex-1 p-2"
+          onSubmit={handleSubmit}
+        >
+          <button type="submit" aria-label="Search">
+            {weatherLoading ?
+              <Icon icon="line-md:loading-loop" width="1.5rem" /> :
+              <Icon icon="material-symbols-light:search" width="1.5rem" />
+            }
           </button>
 
-          <SearchForm
-            className="search-container mr-1 hidden h-7 flex-grow-0 justify-between rounded-[5rem] px-3 sm:flex"
-            handleSubmit={props.handleSubmit}
-            value={props.userInput}
-            setUserInput={props.setUserInput}
+          <input
+            ref={inputRef}
+            type="text"
+            className="w-full bg-inherit outline-none"
+            placeholder="Search location here..."
           />
 
-          <button className="refresh" onClick={props.refresh}>
-            <Icon
-              icon="material-symbols:refresh-rounded"
-              width="1.75rem"
-              height="1.75rem"
-            />
+          <button
+            type="button"
+            aria-label="Help"
+            aria-describedby="show-tooltip"
+            onClick={() => setShowTooltip(prev => !prev)}
+          >
+            <Icon icon="material-symbols-light:help-outline" width="1.75rem" />
           </button>
+        </form>
 
-          <button className="settings" ref={settingsMenuRef}>
-            <Icon
-              icon="ph:gear"
-              width="1.6rem"
-              height="1.6rem"
-              onClick={() => setSettingsOpen((prev) => !prev)}
-            />
-
-            {settingsOpen && (
-              <ul className="settings-menu absolute left-1/2 top-12 z-[1] w-11/12 -translate-x-1/2 cursor-default rounded-lg bg-[#111] sm:left-auto sm:right-4 sm:w-80 sm:translate-x-0">
-                <div className="title pt-2 font-bold">Settings</div>
-                <ul className="content p-2">
-                  <li className="flex justify-between">
-                    <span>Units</span>
-                    <span
-                      className="cursor-pointer rounded-lg bg-sky-600 px-2 sm:hover:bg-sky-500"
-                      onClick={props.changeUnits}
-                    >
-                      {props.isMetric ? 'Metric' : 'Imperial'}
-                    </span>
-                  </li>
-                </ul>
-              </ul>
-            )}
-          </button>
-
-          <button className="about" ref={aboutMenuRef}>
-            <Icon
-              icon="mdi:about-circle-outline"
-              width="1.6rem"
-              height="1.6rem"
-              onClick={() => setAboutOpen((prev) => !prev)}
-            />
-
-            {aboutOpen && (
-              <div className="about-menu absolute left-1/2 top-12 z-[1] w-11/12 -translate-x-1/2 cursor-default rounded-lg bg-[#111] p-3 text-left sm:left-auto sm:right-4 sm:w-80 sm:translate-x-0">
-                <p>This is a weather app for my portfolio.</p>
-                <br />
-                <a
-                  className="text-blue-500"
-                  href="https://github.com/amiftachulh/weather-app"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View on GitHub
-                </a>
-              </div>
-            )}
-          </button>
-        </>
-      )}
-
-      <div
-        className={`${
-          searchOpen ? 'flex' : 'hidden'
-        } flex-grow items-center justify-between gap-2`}
-      >
-        <button className="back-icon" onClick={() => setSearchOpen(false)}>
-          <Icon icon="fa6-solid:arrow-left" />
+        <button
+          className="w-10 bg-slate-100"
+          onClick={swapUnits}
+        >
+          &deg;{isMetric ? 'C' : 'F'}
         </button>
-        <SearchForm
-          className="search-container flex h-7 flex-grow justify-between rounded-[5rem] px-2"
-          handleSubmit={props.handleSubmit}
-          value={props.userInput}
-          setUserInput={props.setUserInput}
-        />
       </div>
+
+      {renderTooltip && (
+        <div
+          id="search-tooltip"
+          className={clsx(
+            "absolute top-14 left-0 mx-3 p-2 bg-neutral-50 border-2 border-slate-200 rounded-md z-20 origin-top-right",
+            {
+              "motion-safe:animate-slide-in": showTooltip,
+              "motion-safe:animate-slide-out": !showTooltip,
+            }
+          )}
+        >
+          <p>You can search just by city name or followed by country code separated by comma.</p>
+          <div className="mt-2">Examples:</div>
+          <ul className="space-y-1">
+            <li><pre className="inline p-1 bg-slate-200 rounded">greenwich</pre></li>
+            <li><pre className="inline p-1 bg-slate-200 rounded">greenwich,uk</pre></li>
+          </ul>
+        </div>
+      )}
     </nav>
   );
 }

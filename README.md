@@ -1,12 +1,12 @@
 # Weather App
 
-This is a weather app that shows current weather and forecast for 5 days / 3 hour.
+This is a weather app that shows current weather and forecast.
 
 ## Tech Stack
 
 - [Vite](https://vitejs.dev/)
 - [React](https://reactjs.org/)
-- [Javascript](https://www.javascript.com/)
+- [JavaScript](https://www.javascript.com/)
 - [Tailwind CSS](https://tailwindcss.com/)
 
 ## Weather Icons
